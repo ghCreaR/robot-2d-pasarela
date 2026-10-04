@@ -45,7 +45,7 @@ No simula nada. Se encarga de todo lo que depende de la red y de los clientes, p
 
 ## Configuración
 
-Se configura con variables de entorno (ver el [`compose.yaml`](https://github.com/ojgarciab/carrera-robots-autonomos/blob/main/compose.yaml) del repositorio común):
+Se configura con variables de entorno (ver el [`compose.yaml`](https://github.com/ojgarciab/carrera-robots-autonomos/blob/master/compose.yaml) del repositorio común):
 
 | Variable | Descripción |
 |----------|-------------|
@@ -65,7 +65,7 @@ Escucha en el puerto `8080` del contenedor.
 - [Arquitectura del servidor](https://github.com/ojgarciab/carrera-robots-autonomos#arquitectura-del-servidor)
 - [API de cliente](https://github.com/ojgarciab/carrera-robots-autonomos#api-de-cliente) y [tokens de API](https://github.com/ojgarciab/carrera-robots-autonomos#tokens-de-api)
 - [Mensajes entre componentes](https://github.com/ojgarciab/carrera-robots-autonomos#mensajes-entre-componentes)
-- [Contratos entre componentes](https://github.com/ojgarciab/carrera-robots-autonomos/tree/main/contratos): API de cliente, mensajes del bus y base de datos
+- [Contratos entre componentes](https://github.com/ojgarciab/carrera-robots-autonomos/tree/master/contratos): API de cliente, mensajes del bus y base de datos
 - [Plan de implementación](Plan.md)
 
 ## Licencia

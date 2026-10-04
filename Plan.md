@@ -51,14 +51,14 @@ La clave del diseño es `bus/transporte.py`: la lógica solo conoce mensajes, no
 
 ## 3. Contratos
 
-La pasarela está en medio de todos los componentes. Sus interfaces están definidas en el directorio [`contratos/`](https://github.com/ojgarciab/carrera-robots-autonomos/tree/main/contratos) del repositorio común, y son la referencia para este plan:
+La pasarela está en medio de todos los componentes. Sus interfaces están definidas en el directorio [`contratos/`](https://github.com/ojgarciab/carrera-robots-autonomos/tree/master/contratos) del repositorio común, y son la referencia para este plan:
 
 | Contrato | Papel de la pasarela |
 |----------|----------------------|
-| [API de cliente](https://github.com/ojgarciab/carrera-robots-autonomos/blob/main/contratos/api-cliente.md) | La implementa: rutas REST, protocolo WebSocket, códigos de error y de cierre. |
-| [Mensajes del bus](https://github.com/ojgarciab/carrera-robots-autonomos/blob/main/contratos/bus.md) | Publica `actuadores`, `actividad` y `control`; se suscribe a `sensores`, `estado`, `eventos` y `latido`; responde a `configuracion`. Concede los permisos del *auth callout*. |
-| [Base de datos](https://github.com/ojgarciab/carrera-robots-autonomos/blob/main/contratos/base-de-datos.md) | Lee `usuarios`, `tokens_api`, `mundos` y `accesos`; escribe `mundos.ultimo_latido`; escucha los canales `NOTIFY`. |
-| [Robots](https://github.com/ojgarciab/carrera-robots-autonomos/blob/main/robots/README.md) y [circuitos](https://github.com/ojgarciab/carrera-robots-autonomos/blob/main/circuitos/README.md) | Los carga de `ROBOTS_DIR` y `CIRCUITOS_DIR`, los sirve al visor y los entrega a los motores. |
+| [API de cliente](https://github.com/ojgarciab/carrera-robots-autonomos/blob/master/contratos/api-cliente.md) | La implementa: rutas REST, protocolo WebSocket, códigos de error y de cierre. |
+| [Mensajes del bus](https://github.com/ojgarciab/carrera-robots-autonomos/blob/master/contratos/bus.md) | Publica `actuadores`, `actividad` y `control`; se suscribe a `sensores`, `estado`, `eventos` y `latido`; responde a `configuracion`. Concede los permisos del *auth callout*. |
+| [Base de datos](https://github.com/ojgarciab/carrera-robots-autonomos/blob/master/contratos/base-de-datos.md) | Lee `usuarios`, `tokens_api`, `mundos` y `accesos`; escribe `mundos.ultimo_latido`; escucha los canales `NOTIFY`. |
+| [Robots](https://github.com/ojgarciab/carrera-robots-autonomos/blob/master/robots/README.md) y [circuitos](https://github.com/ojgarciab/carrera-robots-autonomos/blob/master/circuitos/README.md) | Los carga de `ROBOTS_DIR` y `CIRCUITOS_DIR`, los sirve al visor y los entrega a los motores. |
 
 Puntos del contrato que afectan especialmente a la implementación:
 
