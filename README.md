@@ -27,11 +27,11 @@ No simula nada. Se encarga de todo lo que depende de la red y de los clientes, p
 |------|----------|
 | **API de cliente** | Endpoints REST (`GET /mundos`, entrada y salida del mundo, lectura de sensores, envío de actuadores, `ping`) y un endpoint WebSocket con los mismos comandos. |
 | **Autenticación** | Valida los tokens de API (`crt_rw_…` de lectura-escritura y `crt_ro_…` de solo lectura). Los acepta por cabecera `Authorization: Bearer`, en el primer mensaje del WebSocket o en una cookie. Guarda en memoria durante unos segundos los tokens ya validados y los olvida al instante cuando la base de datos avisa de una revocación (`NOTIFY`). |
-| **Control de acceso** | Comprueba que el usuario tiene acceso al mundo y que su token permite la operación: un token de solo lectura no mueve el robot ni alarga su vida. La vista de administrador solo la pueden usar los administradores. |
+| **Control de acceso** | Comprueba que el usuario tiene acceso al mundo y que su token permite la operación: un token de solo lectura no mueve el robot ni alarga su vida. La vista de administrador, y ver los sensores de robots ajenos, solo lo pueden hacer los administradores. |
 | **Datos en tiempo real** | Reenvía al motor las consignas de los actuadores y empuja la telemetría de los sensores a los WebSocket. Guarda el último valor de cada sensor para el polling, incluido el *long polling* (esperar al siguiente muestreo). |
 | **Actividad del cliente** | Avisa al motor de que el cliente sigue vivo, agrupando los avisos (como mucho uno por segundo). Con ellos el motor lleva los temporizadores de parada de motores (5 s) y de salida del mundo (5 min). |
 | **Mundos activos** | Escucha los latidos de los motores, ofrece el listado de mundos activos y guarda en la base de datos la hora del último latido. |
-| **Autenticación de motores** | Responde al *auth callout* de NATS: comprueba el UUID y el testigo de cada motor contra la base de datos y le da permisos solo sobre los temas de su mundo (`mundo.<uuid>.>`). |
+| **Autenticación de motores** | Responde al *auth callout* de NATS: comprueba el UUID y el testigo de cada motor contra la base de datos y le da permisos solo sobre los temas de su mundo (`mundo.<uuid>.>`). Si un administrador revoca el testigo, corta al instante la conexión del motor. |
 | **Configuración de mundos** | Entrega a cada motor, al arrancar, las definiciones de sus robots permitidos y de su circuito. Sirve los circuitos al visor. |
 | **Recursos estáticos** | Sirve las capas SVG de los robots al visor web. |
 | **CORS** | Aplica la lista de orígenes permitidos (`CORS_ORIGENES`) a las peticiones REST y comprueba la cabecera `Origin` al abrir WebSockets desde un navegador. |

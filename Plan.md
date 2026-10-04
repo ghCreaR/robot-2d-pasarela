@@ -104,7 +104,10 @@ Cada fase termina con pruebas automáticas en verde y se puede revisar por separ
 ### Fase 4 · *Auth callout* de NATS
 - `auth/callout.py`: se suscribe a `$SYS.REQ.USER.AUTH`, decodifica la petición (JWT firmado por el servidor) y lee el UUID y el testigo de las credenciales que presenta el motor.
 - Comprueba el hash del testigo en `mundos` y responde con un JWT de usuario firmado con `NATS_CALLOUT_SEED`. Los permisos son `pub`/`sub` sobre `mundo.<uuid>.>` más `allow_responses`. Si no es válido, responde con un error.
-- Al recibir `testigo_revocado`, desconecta al motor (por ejemplo con la API de sistema de NATS o con un tema de control) y deja de aceptarlo.
+- Guarda, de cada motor aceptado, el identificador del servidor NATS y el `cid` de su conexión, que llegan en la petición del *auth callout*.
+- Al recibir `testigo_revocado`, **corta la conexión del motor al instante** con `$SYS.REQ.SERVER.<id_servidor>.KICK` y deja de aceptar el testigo antiguo.
+- Para poder hacerlo necesita un segundo usuario de NATS en la **cuenta de sistema**, con permiso solo para publicar en `$SYS.REQ.SERVER.*.KICK`. Hay que añadirlo a `nats/nats.conf`, `compose.yaml` y `.env.example` del repositorio común (`NATS_SISTEMA_PASSWORD`). Como cambia la organización de cuentas de NATS (la cuenta de sistema obliga a declarar las cuentas de forma explícita), el cambio de `nats.conf` se prueba en esta fase con un `nats-server` real antes de publicarlo.
+- Como defensa añadida, el JWT que firma la pasarela para cada motor caduca a las 24 h, así que el motor vuelve a pasar por el *auth callout* al reconectar.
 
 **Pruebas:** integración con un `nats-server` real en CI (contenedor de servicio), con un motor falso que se conecta con un testigo bueno y con uno malo, y que intenta publicar fuera de su mundo.
 
@@ -130,6 +133,8 @@ Cada fase termina con pruebas automáticas en verde y se puede revisar por separ
 
 ### Fase 8 · Vista de administrador
 - Comando `observar` (solo administradores): reenvía `estado` a 30 Hz, enriquecido con el nombre visible de cada usuario.
+- `seguir` con `usuario` y `?usuario=` en `GET /sensores` y `GET /robot` (solo administradores), para ver los sensores de cualquier robot del mundo.
+- Pruebas: un usuario normal que manda `usuario` recibe `no_admin`.
 
 ### Fase 9 · Robustez y observabilidad
 - Reconexión a NATS y a PostgreSQL sin perder las conexiones de los clientes.
@@ -159,7 +164,9 @@ Cada fase termina con pruebas automáticas en verde y se puede revisar por separ
 - **Circuitos:** se definen en el repositorio común (`circuitos/*.yaml`), como los robots.
 - **Contratos:** viven en el repositorio común (`contratos/`).
 - **Buzón del motor** `mundo.<uuid>.buzon`, operación `expulsar` y cookie con `POST /sesion`: incluidos en los contratos.
+- **Testigo revocado:** se corta al instante la conexión activa del motor (`KICK`).
+- **Administradores:** pueden seguir los sensores de cualquier robot.
 
 ## 8. Preguntas abiertas
 
-1. **Expulsión de motores:** al revocar el testigo de un mundo, ¿basta con no aceptarlo en la siguiente conexión, o hay que cortar también la conexión activa del motor? Se propone cortarla, con la API de sistema de NATS.
+Ninguna por ahora.
