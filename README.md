@@ -32,7 +32,7 @@ No simula nada. Se encarga de todo lo que depende de la red y de los clientes, p
 | **Actividad del cliente** | Avisa al motor de que el cliente sigue vivo, agrupando los avisos (como mucho uno por segundo). Con ellos el motor lleva los temporizadores de parada de motores (5 s) y de salida del mundo (5 min). |
 | **Mundos activos** | Escucha los latidos de los motores, ofrece el listado de mundos activos y guarda en la base de datos la hora del último latido. |
 | **Autenticación de motores** | Responde al *auth callout* de NATS: comprueba el UUID y el testigo de cada motor contra la base de datos y le da permisos solo sobre los temas de su mundo (`mundo.<uuid>.>`). |
-| **Configuración de mundos** | Entrega a cada motor, al arrancar, las definiciones de sus robots permitidos y de su circuito. |
+| **Configuración de mundos** | Entrega a cada motor, al arrancar, las definiciones de sus robots permitidos y de su circuito. Sirve los circuitos al visor. |
 | **Recursos estáticos** | Sirve las capas SVG de los robots al visor web. |
 | **CORS** | Aplica la lista de orígenes permitidos (`CORS_ORIGENES`) a las peticiones REST y comprueba la cabecera `Origin` al abrir WebSockets desde un navegador. |
 
@@ -56,6 +56,7 @@ Se configura con variables de entorno (ver el [`compose.yaml`](https://github.co
 | `LONG_POLLING_TIMEOUT_MS` | Espera máxima de una petición de long polling (1000 ms por defecto). |
 | `CORS_ORIGENES` | Orígenes permitidos, separados por comas. |
 | `ROBOTS_DIR` | Directorio con las definiciones YAML y las capas SVG de los robots. |
+| `CIRCUITOS_DIR` | Directorio con las definiciones YAML de los circuitos. |
 
 Escucha en el puerto `8080` del contenedor.
 
@@ -64,6 +65,7 @@ Escucha en el puerto `8080` del contenedor.
 - [Arquitectura del servidor](https://github.com/ojgarciab/carrera-robots-autonomos#arquitectura-del-servidor)
 - [API de cliente](https://github.com/ojgarciab/carrera-robots-autonomos#api-de-cliente) y [tokens de API](https://github.com/ojgarciab/carrera-robots-autonomos#tokens-de-api)
 - [Mensajes entre componentes](https://github.com/ojgarciab/carrera-robots-autonomos#mensajes-entre-componentes)
+- [Contratos entre componentes](https://github.com/ojgarciab/carrera-robots-autonomos/tree/main/contratos): API de cliente, mensajes del bus y base de datos
 - [Plan de implementación](Plan.md)
 
 ## Licencia
